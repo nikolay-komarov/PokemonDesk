@@ -13,11 +13,16 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'main.js',
   },
+  watch: true,
+  watchOptions: {
+    ignored: /node_modules/,
+    poll: 5000,
+  },
   module: {
     rules: [
       {
         test: /\.[tj]sx?$/,
-        exclude: /node-modules/,
+        exclude: /node_modules/,
         use: ['ts-loader'],
       },
       {
@@ -42,12 +47,16 @@ module.exports = {
           'sass-loader',
         ],
       },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack', 'url-loader'],
+      },
     ],
   },
   plugins: [
     new HTMLWebpackPlugins({
       template: path.resolve(__dirname, 'public/index.html'),
-    })
+    }),
   ],
   devServer: {
     port: 3000,

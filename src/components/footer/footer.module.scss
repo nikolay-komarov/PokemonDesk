@@ -1,0 +1,39 @@
+@import '../../variables';
+.root {
+  width: 100%;
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: top;
+
+  position: absolute;
+  bottom: 0;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 1125px;
+  height: 22px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.makeWith {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 22px;
+  color: $dark;
+}
+
+.teamLink {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 22px;
+  color: $dark;
+
+  text-decoration: none;
+}
