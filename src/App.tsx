@@ -9,7 +9,20 @@ import PokedexPage from './pages/pokedex/index';
 const App = () => {
   return (
     <BrowserRouter>
-      <Route path="/" exact component={HomePage} />
+      <Route
+        path="/"
+        exact
+        render={(props) => {
+          const {
+            history: { push },
+          } = props;
+          const toPokedex = () => {
+            push('/pokedex');
+          };
+
+          return <HomePage toPokedexLink={toPokedex} />;
+        }}
+      />
       <Route path="/pokedex" component={PokedexPage} />
     </BrowserRouter>
   );

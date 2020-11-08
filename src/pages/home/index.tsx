@@ -7,7 +7,11 @@ import Layout from '../../components/layout';
 
 import s from './home.module.scss';
 
-const HomePage = () => {
+interface HomePageProps {
+  toPokedexLink: () => void;
+}
+
+const HomePage: React.FC<HomePageProps> = ({ toPokedexLink }) => {
   return (
     <div className={s.root}>
       <Header />
@@ -19,7 +23,7 @@ const HomePage = () => {
           <p>You can know the type of Pokemon, its strengths, disadvatages and abilities</p>
           <Button
             // eslint-disable-next-line no-console
-            onClick={() => console.log('button click!')}>
+            onClick={toPokedexLink}>
             See pokemons
           </Button>
         </div>
