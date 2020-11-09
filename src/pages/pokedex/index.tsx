@@ -1,9 +1,10 @@
 import React from 'react';
+
+import s from './pokedex.module.scss';
+
 import Header from '../../components/header';
 import Footer from '../../components/footer';
 import Layout from '../../components/layout';
-
-import s from './pokedex.module.scss';
 
 const PokedexPage = () => {
   return (

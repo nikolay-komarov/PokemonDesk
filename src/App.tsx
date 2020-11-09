@@ -1,31 +1,11 @@
-import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { useRoutes } from 'hookrouter';
 
-import HomePage from './pages/home/index';
-import PokedexPage from './pages/pokedex/index';
-
-// import s from './App.module.scss';
+import routes from './routes';
 
 const App = () => {
-  return (
-    <BrowserRouter>
-      <Route
-        path="/"
-        exact
-        render={(props) => {
-          const {
-            history: { push },
-          } = props;
-          const toPokedex = () => {
-            push('/pokedex');
-          };
+  const match = useRoutes(routes);
 
-          return <HomePage toPokedexLink={toPokedex} />;
-        }}
-      />
-      <Route path="/pokedex" component={PokedexPage} />
-    </BrowserRouter>
-  );
+  return match;
 };
 
 export default App;
