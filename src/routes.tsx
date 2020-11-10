@@ -1,4 +1,5 @@
 import React from 'react';
+import { navigate } from 'hookrouter';
 
 import EmptyPage from './pages/empty/empty';
 import HomePage from './pages/home';
@@ -14,7 +15,7 @@ export const GENERAL_MENU: IGeneralMenu[] = [
   {
     title: 'Home',
     link: '/',
-    component: () => <HomePage toPokedexLink={() => console.log('click!')} />,
+    component: () => <HomePage toPokedexLink={() => navigate('/pokedex')} />,
   },
   {
     title: 'Pokédex',
