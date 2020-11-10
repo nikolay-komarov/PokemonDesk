@@ -7,11 +7,25 @@ import Footer from '../../components/footer';
 import Layout from '../../components/layout';
 import PokemonCard from '../../components/pokemon-card';
 
-// import pokemons from '../../mock/pokemons.json';
-// eslint-disable-next-line import/extensions
-import pokemons from '../../mock/pokemons.js';
+import pokemons from '../../mock/pokemons.json';
+
+// todo: move to utils
+const normalizePokedata = (pokemons: any) =>
+  Object.keys(pokemons).length
+    ? {
+        name: pokemons.name,
+        stats: {
+          attack: pokemons.stats.attack,
+          defense: pokemons.stats.defense,
+        },
+        types: pokemons.types,
+        img: pokemons.img,
+      }
+    : {};
 
 const PokedexPage = () => {
+  const pokemonsList = pokemons.map((item: any) => normalizePokedata(item));
+
   return (
     <div className={s.root}>
       <Header />
@@ -19,15 +33,10 @@ const PokedexPage = () => {
         <div>
           <h1>800 Pokemons for you to choose your favorite</h1>
           <div className={s.pokemonGallery}>
-            {pokemons.map((item) => {
+            {pokemonsList.map((item: any) => {
               return (
-                <div className={s.pokemonCardPreview}>
-                  <PokemonCard
-                  // stats={item.stats}
-                  // types={item.types}
-                  // img={item.img}
-                  // name={item.name}
-                  />
+                <div className={s.pokemonCardPreview} key={item.name}>
+                  <PokemonCard stats={item.stats} types={item.types} img={item.img} name={item.name} />
                 </div>
               );
             })}
