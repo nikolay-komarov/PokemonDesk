@@ -7,6 +7,8 @@ import TeamRocket from './assets/team-rocket.png';
 
 import Button, { ButtonSize, ButtonColor } from '../../components/button';
 
+import { LinkEnum } from '../../routes';
+
 const NotFoundPage = () => {
   return (
     <div className={s.root}>
@@ -18,7 +20,11 @@ const NotFoundPage = () => {
             <span>The rocket team</span> has won this time
           </div>
         </div>
-        <Button size={ButtonSize.medium} color={ButtonColor.yellow} isFullWidth={false} onClick={() => navigate('/')}>
+        <Button
+          size={ButtonSize.medium}
+          color={ButtonColor.yellow}
+          isFullWidth={false}
+          onClick={() => navigate(LinkEnum.HOME)}>
           Return
         </Button>
       </div>
