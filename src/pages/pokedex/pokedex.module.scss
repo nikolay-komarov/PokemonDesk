@@ -12,3 +12,13 @@
   align-items: center;
   justify-content: space-between;
 }
+
+.pokemonGallery {
+  max-width: 1125px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.pokemonCardPreview {
+  margin: 0 12px;
+}

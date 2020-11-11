@@ -67,3 +67,23 @@
     }
   }
 }
+
+.activeLink {
+  &:after {
+    content: '';
+
+    display: block;
+    position: absolute;
+    bottom: -8px;
+    height: 1px;
+    width: 1%;
+    background: $dark;
+    border: 1px solid $dark;
+    border-radius: 6px;
+    opacity: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    opacity: 1;
+  }
+}

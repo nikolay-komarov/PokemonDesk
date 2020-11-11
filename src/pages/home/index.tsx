@@ -1,11 +1,12 @@
 import React from 'react';
+
+import s from './home.module.scss';
+
 import Header from '../../components/header';
 import Footer from '../../components/footer';
 import Button, { ButtonSize, ButtonColor } from '../../components/button';
 import Parallax from '../../components/parallax';
 import Layout from '../../components/layout';
-
-import s from './home.module.scss';
 
 interface HomePageProps {
   toPokedexLink: () => void;
