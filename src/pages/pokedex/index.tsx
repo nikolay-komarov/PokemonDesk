@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import s from './pokedex.module.scss';
 
 import Footer from '../../components/footer';
 import Layout from '../../components/layout';
 import PokemonCard from '../../components/pokemon-card';
-
-import pokemons from '../../mock/pokemons.json';
 
 // todo: move to utils
 const normalizePokedata = (pokemons: any) =>
@@ -23,13 +21,46 @@ const normalizePokedata = (pokemons: any) =>
     : {};
 
 const PokedexPage = () => {
+  const [totalPokemons, setTotalPokemons] = useState(0);
+  const [pokemons, setPokemons] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    fetch('http://zar.hosthot.ru/api/v1/pokemons?limit=10')
+      .then((res) => res.json())
+      .then((data) => {
+        setTotalPokemons(data.total);
+        setPokemons(data.pokemons);
+        setIsError(false);
+      })
+      .catch(() => {
+        setIsError(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Something wrong</div>;
+  }
+
   const pokemonsList = pokemons.map((item: any) => normalizePokedata(item));
 
   return (
     <div className={s.root}>
       <Layout className={s.contentWrap}>
         <div>
-          <h1>800 Pokemons for you to choose your favorite</h1>
+          <h1>
+            {totalPokemons} <b>Pokemons</b> for you to choose your favorite
+          </h1>
           <div className={s.pokemonGallery}>
             {pokemonsList.map((item: any) => {
               return (
