@@ -27,21 +27,22 @@ const PokedexPage = () => {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
+    const getPokemons = async () => {
+      setIsLoading(true);
+      try {
+        // todo: remove magic number limit=10
+        const response = await fetch('http://zar.hosthot.ru/api/v1/pokemons?limit=10');
+        const data = await response.json();
 
-    fetch('http://zar.hosthot.ru/api/v1/pokemons?limit=10')
-      .then((res) => res.json())
-      .then((data) => {
         setTotalPokemons(data.total);
         setPokemons(data.pokemons);
-        setIsError(false);
-      })
-      .catch(() => {
+      } catch (error) {
         setIsError(true);
-      })
-      .finally(() => {
+      } finally {
         setIsLoading(false);
-      });
+      }
+    };
+    getPokemons();
   }, []);
 
   if (isLoading) {
