@@ -20,9 +20,23 @@ const normalizePokedata = (pokemons: any) =>
       }
     : {};
 
-const PokedexPage = () => {
-  const [totalPokemons, setTotalPokemons] = useState(0);
-  const [pokemons, setPokemons] = useState([]);
+type TypePokemons = {
+  name: string;
+  stats: {
+    attack: number;
+    defense: number;
+  };
+  types: string;
+  img: string;
+};
+
+type TypePokemonsData = {
+  total: number;
+  pokemons: TypePokemons[];
+};
+
+const usePokemons = () => {
+  const [data, setData] = useState<TypePokemonsData>({ total: 0, pokemons: [] });
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
@@ -30,12 +44,11 @@ const PokedexPage = () => {
     const getPokemons = async () => {
       setIsLoading(true);
       try {
-        // todo: remove magic number limit=10
+        // todo: вынести url с параметрами в конфиг
         const response = await fetch('http://zar.hosthot.ru/api/v1/pokemons?limit=10');
-        const data = await response.json();
+        const result = await response.json();
 
-        setTotalPokemons(data.total);
-        setPokemons(data.pokemons);
+        setData(result);
       } catch (error) {
         setIsError(true);
       } finally {
@@ -45,6 +58,16 @@ const PokedexPage = () => {
     getPokemons();
   }, []);
 
+  return {
+    data,
+    isLoading,
+    isError,
+  };
+};
+
+const PokedexPage = () => {
+  const { data, isLoading, isError } = usePokemons();
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -53,14 +76,14 @@ const PokedexPage = () => {
     return <div>Something wrong</div>;
   }
 
-  const pokemonsList = pokemons.map((item: any) => normalizePokedata(item));
+  const pokemonsList = data.pokemons.map((item: any) => normalizePokedata(item));
 
   return (
     <div className={s.root}>
       <Layout className={s.contentWrap}>
         <div>
           <h1>
-            {totalPokemons} <b>Pokemons</b> for you to choose your favorite
+            {data.total} <b>Pokemons</b> for you to choose your favorite
           </h1>
           <div className={s.pokemonGallery}>
             {pokemonsList.map((item: any) => {
