@@ -5,7 +5,7 @@ import s from './pokedex.module.scss';
 import Footer from '../../components/footer';
 import Layout from '../../components/layout';
 import PokemonCard from '../../components/pokemon-card';
-import config from '../../config';
+import req from '../../utils/request';
 
 // todo: move to utils
 const normalizePokedata = (pokemons: any) =>
@@ -44,10 +44,8 @@ const usePokemons = () => {
   useEffect(() => {
     const getPokemons = async () => {
       setIsLoading(true);
-      const url = `${config.client.server.protocol}://${config.client.server.host}/${config.client.endpoint.getPokemons.uri.pathname}`;
       try {
-        const response = await fetch(url);
-        const result = await response.json();
+        const result = await req('getPokemons');
 
         setData(result);
       } catch (error) {
