@@ -5,6 +5,7 @@ import s from './pokedex.module.scss';
 import Footer from '../../components/footer';
 import Layout from '../../components/layout';
 import PokemonCard from '../../components/pokemon-card';
+import config from '../../config';
 
 // todo: move to utils
 const normalizePokedata = (pokemons: any) =>
@@ -43,9 +44,9 @@ const usePokemons = () => {
   useEffect(() => {
     const getPokemons = async () => {
       setIsLoading(true);
+      const url = `${config.client.server.protocol}://${config.client.server.host}/${config.client.endpoint.getPokemons.uri.pathname}`;
       try {
-        // todo: вынести url с параметрами в конфиг
-        const response = await fetch('http://zar.hosthot.ru/api/v1/pokemons?limit=10');
+        const response = await fetch(url);
         const result = await response.json();
 
         setData(result);
