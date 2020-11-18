@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import s from './pokedex.module.scss';
 
 import Footer from '../../components/footer';
 import Layout from '../../components/layout';
 import PokemonCard from '../../components/pokemon-card';
-import req from '../../utils/request';
+import useData from '../../hook/getData';
 
 // todo: move to utils
 const normalizePokedata = (pokemons: any) =>
@@ -21,51 +21,8 @@ const normalizePokedata = (pokemons: any) =>
       }
     : {};
 
-type TypePokemons = {
-  name: string;
-  stats: {
-    attack: number;
-    defense: number;
-  };
-  types: string;
-  img: string;
-};
-
-type TypePokemonsData = {
-  total: number;
-  pokemons: TypePokemons[];
-};
-
-const usePokemons = () => {
-  const [data, setData] = useState<TypePokemonsData>({ total: 0, pokemons: [] });
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-
-  useEffect(() => {
-    const getPokemons = async () => {
-      setIsLoading(true);
-      try {
-        const result = await req('getPokemons');
-
-        setData(result);
-      } catch (error) {
-        setIsError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    getPokemons();
-  }, []);
-
-  return {
-    data,
-    isLoading,
-    isError,
-  };
-};
-
 const PokedexPage = () => {
-  const { data, isLoading, isError } = usePokemons();
+  const { data, isLoading, isError } = useData('getPokemons');
 
   if (isLoading) {
     return <div>Loading...</div>;
