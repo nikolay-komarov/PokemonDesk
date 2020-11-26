@@ -7,6 +7,12 @@ import Layout from '../../components/layout';
 import PokemonCard from '../../components/pokemon-card';
 import useData from '../../hook/getData';
 
+import { IPokemons } from '../../interface/pokemons';
+
+interface IQuery {
+  name?: string;
+}
+
 // todo: move to utils
 const normalizePokedata = (pokemons: any) =>
   Object.keys(pokemons).length
@@ -23,14 +29,14 @@ const normalizePokedata = (pokemons: any) =>
 
 const PokedexPage = () => {
   const [searchValue, setSearchValue] = useState('');
-  const [query, setQuery] = useState({});
+  const [query, setQuery] = useState<IQuery>({});
 
-  const { data, isLoading, isError } = useData('getPokemons', query, [searchValue]);
+  const { data, isLoading, isError } = useData<IPokemons>('getPokemons', query, [searchValue]);
 
   const handleSearchChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(evt.target.value);
-    setQuery((s) => ({
-      ...s,
+    setQuery((state: IQuery) => ({
+      ...state,
       name: evt.target.value,
     }));
   };
@@ -44,7 +50,7 @@ const PokedexPage = () => {
     return <div>Something wrong</div>;
   }
 
-  const pokemonsList = data.pokemons.map((item: any) => normalizePokedata(item));
+  const pokemonsList = data && data.pokemons.map((item: any) => normalizePokedata(item)); // todo: replace any !
 
   // todo: add styles for input
   return (
@@ -52,13 +58,14 @@ const PokedexPage = () => {
       <Layout className={s.contentWrap}>
         <div>
           <h1>
-            {!isLoading && data.total} <b>Pokemons</b> for you to choose your favorite
+            {!isLoading && data && data.total} <b>Pokemons</b> for you to choose your favorite
           </h1>
           <div>
             <input type="text" value={searchValue} onChange={handleSearchChange} />
           </div>
           <div className={s.pokemonGallery}>
             {!isLoading &&
+              pokemonsList &&
               pokemonsList.map((item: any) => {
                 return (
                   <div className={s.pokemonCardPreview} key={item.name}>
