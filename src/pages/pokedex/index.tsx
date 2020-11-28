@@ -9,6 +9,7 @@ import useData from '../../hook/getData';
 import useDebounce from '../../hook/useDebounce';
 
 import { IPokemons, PokemonsRequest } from '../../interface/pokemons';
+import { toCapitalizeFirstLetter } from '../../utils/utils';
 
 interface IQuery {
   name?: string;
@@ -56,7 +57,12 @@ const PokedexPage = () => {
               data.pokemons.map((item: PokemonsRequest) => {
                 return (
                   <div className={s.pokemonCardPreview} key={item.name}>
-                    <PokemonCard stats={item.stats} types={item.types} img={item.img} name={item.name} />
+                    <PokemonCard
+                      stats={item.stats}
+                      types={item.types}
+                      img={item.img}
+                      name={toCapitalizeFirstLetter(item.name)}
+                    />
                   </div>
                 );
               })}
