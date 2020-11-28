@@ -7,25 +7,11 @@ import Layout from '../../components/layout';
 import PokemonCard from '../../components/pokemon-card';
 import useData from '../../hook/getData';
 
-import { IPokemons } from '../../interface/pokemons';
+import { IPokemons, PokemonsRequest } from '../../interface/pokemons';
 
 interface IQuery {
   name?: string;
 }
-
-// todo: move to utils
-const normalizePokedata = (pokemons: any) =>
-  Object.keys(pokemons).length
-    ? {
-        name: pokemons.name,
-        stats: {
-          attack: pokemons.stats.attack,
-          defense: pokemons.stats.defense,
-        },
-        types: pokemons.types,
-        img: pokemons.img,
-      }
-    : {};
 
 const PokedexPage = () => {
   const [searchValue, setSearchValue] = useState('');
@@ -50,8 +36,6 @@ const PokedexPage = () => {
     return <div>Something wrong</div>;
   }
 
-  const pokemonsList = data && data.pokemons.map((item: any) => normalizePokedata(item)); // todo: replace any !
-
   // todo: add styles for input
   return (
     <div className={s.root}>
@@ -65,8 +49,8 @@ const PokedexPage = () => {
           </div>
           <div className={s.pokemonGallery}>
             {!isLoading &&
-              pokemonsList &&
-              pokemonsList.map((item: any) => {
+              data &&
+              data.pokemons.map((item: PokemonsRequest) => {
                 return (
                   <div className={s.pokemonCardPreview} key={item.name}>
                     <PokemonCard stats={item.stats} types={item.types} img={item.img} name={item.name} />
