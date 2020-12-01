@@ -6,31 +6,27 @@ import Footer from '../../components/footer';
 import Layout from '../../components/layout';
 import PokemonCard from '../../components/pokemon-card';
 import useData from '../../hook/getData';
+import useDebounce from '../../hook/useDebounce';
 
-// todo: move to utils
-const normalizePokedata = (pokemons: any) =>
-  Object.keys(pokemons).length
-    ? {
-        name: pokemons.name,
-        stats: {
-          attack: pokemons.stats.attack,
-          defense: pokemons.stats.defense,
-        },
-        types: pokemons.types,
-        img: pokemons.img,
-      }
-    : {};
+import { IPokemons, PokemonsRequest } from '../../interface/pokemons';
+import { toCapitalizeFirstLetter } from '../../utils/utils';
+
+interface IQuery {
+  name?: string;
+}
 
 const PokedexPage = () => {
   const [searchValue, setSearchValue] = useState('');
-  const [query, setQuery] = useState({});
+  const [query, setQuery] = useState<IQuery>({});
 
-  const { data, isLoading, isError } = useData('getPokemons', query, [searchValue]);
+  const debouncedValue = useDebounce(searchValue, 1000);
+
+  const { data, isLoading, isError } = useData<IPokemons>('getPokemons', query, [debouncedValue]);
 
   const handleSearchChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(evt.target.value);
-    setQuery((s) => ({
-      ...s,
+    setQuery((state: IQuery) => ({
+      ...state,
       name: evt.target.value,
     }));
   };
@@ -44,25 +40,29 @@ const PokedexPage = () => {
     return <div>Something wrong</div>;
   }
 
-  const pokemonsList = data.pokemons.map((item: any) => normalizePokedata(item));
-
   // todo: add styles for input
   return (
     <div className={s.root}>
       <Layout className={s.contentWrap}>
         <div>
           <h1>
-            {!isLoading && data.total} <b>Pokemons</b> for you to choose your favorite
+            {!isLoading && data && data.total} <b>Pokemons</b> for you to choose your favorite
           </h1>
           <div>
             <input type="text" value={searchValue} onChange={handleSearchChange} />
           </div>
           <div className={s.pokemonGallery}>
             {!isLoading &&
-              pokemonsList.map((item: any) => {
+              data &&
+              data.pokemons.map((item: PokemonsRequest) => {
                 return (
                   <div className={s.pokemonCardPreview} key={item.name}>
-                    <PokemonCard stats={item.stats} types={item.types} img={item.img} name={item.name} />
+                    <PokemonCard
+                      stats={item.stats}
+                      types={item.types}
+                      img={item.img}
+                      name={toCapitalizeFirstLetter(item.name)}
+                    />
                   </div>
                 );
               })}

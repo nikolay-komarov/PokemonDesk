@@ -9,9 +9,7 @@ interface PokemonCardProps {
     attack: number;
     defense: number;
   };
-  types: {
-    type: string;
-  }[];
+  types: string[];
   img: string;
 }
 
@@ -35,7 +33,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ stats, types, img, name }) =>
           </div>
         </div>
         <div className={s.labelWrap}>
-          <span className={s.label}>{types[0].type}</span>
+          <span className={s.label}>{types[0]}</span>
         </div>
       </div>
       <div className={s.pictureWrap}>
